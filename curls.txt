@@ -1,0 +1,19 @@
+curl -X 'POST' 'http://127.0.0.1:8000/users/' -H 'Content-Type: application/json' -d '{
+    "name": "John Doe",
+    "age": 30,
+    "profession": "Software Engineer",
+    "salary": 75000.50
+}'
+
+curl -X 'GET' 'http://127.0.0.1:8000/users/'
+
+curl -X 'GET' 'http://127.0.0.1:8000/users/550e8400-e29b-41d4-a716-446655440000'
+
+curl -X 'PUT' 'http://127.0.0.1:8000/users/550e8400-e29b-41d4-a716-446655440000' -H 'Content-Type: application/json' -d '{
+    "name": "John Smith",
+    "age": 31,
+    "profession": "Data Scientist",
+    "salary": 80000.00
+}'
+
+curl -X 'DELETE' 'http://127.0.0.1:8000/users/550e8400-e29b-41d4-a716-446655440000'
