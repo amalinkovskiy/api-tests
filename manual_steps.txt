@@ -5,3 +5,4 @@
     "salary": 65000.00
 } save uuid from response to variable uuid1 and print the response
 - get the user by uuid using the uuid1 variable
+- on http://127.0.0.1:8000/users/ create user with name = John Doe, age = 22, profession = Project Manager, salary = 90001.0

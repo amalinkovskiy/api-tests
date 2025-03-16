@@ -1,43 +1,48 @@
 
-import requests
 import pytest
+import requests
 
-BASE_URL = "http://127.0.0.1:8000/users/"
+BASE_URL = "http://127.0.0.1:8000"
 
-@pytest.fixture(scope="module")
-def create_user():
-    data = {
+@pytest.fixture
+def uuid1():
+    user_data = {
         "name": "Jane Doe",
         "age": 28,
         "profession": "Data Analyst",
         "salary": 65000.00
     }
-    response = requests.post(BASE_URL, json=data)
-    response.raise_for_status()  # Ensure we notice bad responses
-    uuid1 = response.json().get('uuid')
-    print("Response from POST request:", response.json())
-    print("UUID from POST request:", uuid1)
-    return uuid1
+    response = requests.post(f"{BASE_URL}/users/", json=user_data)
+    response.raise_for_status()
+    user = response.json()
+    print(user)
+    assert "uuid" in user
+    return user["uuid"]
 
-def test_create_user(create_user):
-    response = requests.get(f"{BASE_URL}{create_user}")
-    response.raise_for_status()  # Ensure we notice bad responses
-    user_data = response.json()
-    assert user_data['name'] == "Jane Doe"
-    assert user_data['age'] == 28
-    assert user_data['profession'] == "Data Analyst"
-    assert user_data['salary'] == 65000.00
-    print("Response from GET request:", user_data)
+def test_create_user(uuid1):
+    assert uuid1 is not None
 
-def test_get_user_by_uuid(create_user):
-    response = requests.get(f"{BASE_URL}{create_user}")
-    response.raise_for_status()  # Ensure we notice bad responses
-    user_data = response.json()
-    assert user_data['name'] == "Jane Doe"
-    assert user_data['age'] == 28
-    assert user_data['profession'] == "Data Analyst"
-    assert user_data['salary'] == 65000.00
-    print("Response from GET request:", user_data)
+def test_get_user_by_uuid(uuid1):
+    response = requests.get(f"{BASE_URL}/users/{uuid1}")
+    response.raise_for_status()
+    user = response.json()
+    assert user["name"] == "Jane Doe"
+    assert user["age"] == 28
+    assert user["profession"] == "Data Analyst"
+    assert user["salary"] == 65000.00
 
-if __name__ == "__main__":
-    pytest.main(['-s'])
+def test_create_second_user():
+    user_data = {
+        "name": "John Doe",
+        "age": 22,
+        "profession": "Project Manager",
+        "salary": 90001.0
+    }
+    response = requests.post(f"{BASE_URL}/users/", json=user_data)
+    response.raise_for_status()
+    user = response.json()
+    assert "uuid" in user
+    assert user["name"] == "John Doe"
+    assert user["age"] == 22
+    assert user["profession"] == "Project Manager"
+    assert user["salary"] == 90001.0
