@@ -1,0 +1,7 @@
+- Make POST request to http://127.0.0.1:8000/users/ with data {
+    "name": "Jane Doe",
+    "age": 28,
+    "profession": "Data Analyst",
+    "salary": 65000.00
+} save uuid from response to variable uuid1 and print the response
+- get the user by uuid using the uuid1 variable
